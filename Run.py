@@ -12,7 +12,7 @@ import sys
 alphabet = list('abcdefghijklmnopqrstuvwxyz')
 random.shuffle(alphabet)
 table = ''.join(alphabet)[:10]
-
+print(table)
 
 def MD5(s):
     return hashlib.md5(s.encode()).hexdigest()
@@ -47,12 +47,16 @@ def Run(IMEI=None):
                 exit("User Aborted.")
 
     API_ROOT = 'http://client3.aipao.me/api'  # client3 for Android
-    Version = '2.14'
+    Version = '2.40'
+
+    header={'version': Version}
 
     # Login
     TokenRes = requests.get(
-        API_ROOT + '/%7Btoken%7D/QM_Users/Login_AndroidSchool?IMEICode=' + IMEI)
+        API_ROOT + '/%7Btoken%7D/QM_Users/Login_AndroidSchool?IMEICode=' + IMEI,headers=header)
     TokenJson = json.loads(TokenRes.content.decode('utf8', 'ignore'))
+
+    print(TokenJson)
 
     # headers
     token = TokenJson['Data']['Token']
@@ -64,6 +68,8 @@ def Run(IMEI=None):
 
     header = {'nonce': nonce, 'timespan': timespan,
               'sign': sign, 'version': Version, 'Accept': None, 'User-Agent': None, 'Accept-Encoding': None, 'Connection': 'Keep-Alive'}
+
+    
 
     # Get User Info
 
